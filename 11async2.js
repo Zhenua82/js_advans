@@ -1,3 +1,4 @@
+'use strict';
 //Последовательность в асинхронности:
 // Непоследоваьельно:
 console.log(1);//1
@@ -74,7 +75,7 @@ asynn().then(data => {
 async function allProducts(){
     const resp = await fetch(`https://dummyjson.com/products/`)
     const {products} = await resp.json()
-    // console.log(products)
+    console.log(products)
     return products
 }
 async function produc(i){

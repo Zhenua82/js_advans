@@ -1,0 +1,16 @@
+body{
+    width: 663px;
+    margin: 0 auto;
+    /* display: flex; */
+    display: grid;
+    justify-content: center;
+}
+#root{
+    width: 601px;
+    font-family: 'Open Sans', sans-serif;
+    color: var(--black)
+}
+:root{
+    --black: rgba(18, 18, 18, 1);
+    --white: rgba(255, 255, 255, 1);
+}

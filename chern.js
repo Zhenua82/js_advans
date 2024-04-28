@@ -1,7 +1,7 @@
 'use strict';
 
-console.log(new Date());//Настоящее время
-console.log('start');
-(function() {
-    console.log('Start init');
-})();
+for (let i = 0; i < 5; i++){
+    setTimeout(()=> {
+        console.log(i)
+    }, 10000)
+}

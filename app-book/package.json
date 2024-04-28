@@ -1,0 +1,27 @@
+{
+  "name": "book-zhenyaa",
+  "version": "1.0.0",
+  "description": "My js book app",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c --watch",
+    "start": "live-server"
+  },
+  "keywords": [
+    "book"
+  ],
+  "author": "Zhenua",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "rollup": "^4.14.3",
+    "rollup-plugin-import-css": "^3.5.0"
+  },
+  "dependencies": {
+    "on-change": "^5.0.1"
+  }
+}

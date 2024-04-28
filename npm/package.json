@@ -1,0 +1,20 @@
+{
+  "name": "book-zhenya",
+  "version": "1.0.0",
+  "description": "My js book app",
+  "main": "index.js",
+  "//": "//либо создать файл .npmignore в котором указывается, что мы должны не публиковать в проекте",
+  "scripts": {
+    "build": "rollup",
+    "live-s": "live-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "book"
+  ],
+  "author": "Zhenya",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^4.14.3"
+  }
+}

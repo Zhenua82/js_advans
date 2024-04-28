@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /><!-- Нужен для совместимости с браузером Internet Explorer. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <!-- <script src="./1set_map.js"></script> -->
@@ -15,16 +15,47 @@
     <!-- <script src="./7request.js"></script> -->
     <!-- <script src="./8request2.js"></script> -->
     <!-- <script src="./9promise.js"></script> -->
-    <!-- <script src="./10async.js"></script> -->
-    <!-- <script src="./11async2.js"></script> -->
+    <!-- <script src="./10async_try_catch.js"></script> -->
+    <script src="./11async2.js"></script>
     <!-- defer Делаем скрипт асинхронным: -->
-    <script src="./12fetch_post.js" defer></script>
+    <!-- <script src="./12fetch_post.js" defer></script> -->
+    <!-- <script src="./15modulcomm.js" defer></script> -->
+    <!-- <script src="./14modul.js" defer></script> -->
+    <!-- <script src="./bundle.js" defer></script> -->
+    <!-- <script src="./bundle17.js" defer></script> -->
+    <!-- <script src="./13dom_advans_modul.js" type="module"></script> -->
+    
   </head>
   <body style="background-color: #d2cbf7; text-align: center">
-    <img src="./logo.svg" alt="" />
+    <img id="idd" src="./logo.svg" alt="" />
     <div class="zadacha_var2"></div>
-    <div class="err"></div>
-    <button>Generate</button>
+    <div id="idd" class="err">err</div>
+    <div class="err">Повторная  ошибка</div>
+    <button onclick="generate(event)">Generate</button>
     <div class="mesto"></div>
+    <div class="spisok" style="font-size: 30px;">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+      <div>10</div>
+      <div>11</div>
+      <div>12</div>
+      <div>13</div>
+      <div>14</div>
+      <div>15</div>
+      <div>16</div>
+      <div>17</div>
+      <div>18</div>
+      <div>19</div>
+      <div>20</div>
+      <div class="down">down</div>
+    </div>
+    <div class="zadacha_dom"></div>
   </body>
 </html>

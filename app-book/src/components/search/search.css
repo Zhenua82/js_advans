@@ -1,0 +1,117 @@
+/* .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;    
+}
+.menu{
+    display: flex;
+    align-items: center;
+    gap: 27px;
+}
+.menu__item{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.10000000149011612px;
+    text-align: left;
+    color: var(--black)
+}
+.menu__item:hover{
+    font-weight: 700;
+}
+.menu__item:visited{
+    font-weight: 700;
+}
+.menu__caunter{
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 8px;
+    text-align: left;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    padding: 7px;
+} */
+
+.header{
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    margin-top: 35px;    
+}
+
+.menu{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.menu__item{
+    display: grid;
+    grid-template-columns: 10% 70% 15% ;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.10000000149011612px;
+    text-align: center;
+    color: var(--black);
+}
+.menu__caunter{
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 8px;
+    text-align: left;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    padding: 7px;
+} 
+.search{
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: 90% 10%;
+    margin-top: 40px;
+    gap: 10px;
+}
+.search__wrapper{
+    /* display: flex; */
+    display: grid;
+    flex: 1;
+    position: relative;
+    background-color: #FAFAFA;
+    border-radius: 5px;
+    height: 56px;
+}
+.search__input{
+    margin-left: 60px;
+    border: none;
+    background-color: #FAFAFA;
+    width: 200px;
+}
+.search__input::placeholder{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 32px;
+    text-align: left;
+    font-family: 'Open Sans';
+    color: rgba(37, 37, 37, 1);
+}
+.search__input:focus {
+    outline: none;
+}
+.search__wrapper img{
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    width: 24px;
+}
+.button__search{
+    width: 56px;
+    background-color: rgba(18, 18, 18, 1);
+    border: none;
+    border-radius: 5px;
+}
