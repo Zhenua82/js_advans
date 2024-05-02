@@ -9,8 +9,8 @@ export class Card extends DivComponent{
     };
 
     render(){
-        let proverka = this.appState.favorites.find(el => el.title == this.state.title);
-        // let proverka = this.appState.favorites.find(el => el.key == this.state.key);
+        // let proverka = this.appState.favorites.find(el => el.title == this.state.title);
+        let proverka = this.appState.favorites.find(el => el.key == this.state.key);
         this.elem.classList.add('list-card');
         this.elem.innerHTML = `
         <div class="card">
@@ -24,7 +24,20 @@ export class Card extends DivComponent{
             <button class="favor__footer__card ${proverka ? 'favor-active' : ''}"><img src="${proverka ? './static/add-white.png' : './static/add.png'}" alt="Favor"></button>
         </div>
     </div>`;
+        // Найти кнопку внутри this.elem и добавить обработчик события
+        let buttonClic = this.elem.querySelector('.favor__footer__card');
+        buttonClic.addEventListener('click', this.clic_btn.bind(this));
         return this.elem;
+    };
+    FAVOR_KEY = 'FAVOR_KEY';
+    clic_btn(){
+        let ind = this.appState.favorites.findIndex(el => el.key == this.state.key)
+        if(ind >= 0){
+            this.appState.favorites.splice(ind, 1);
+            localStorage.setItem(this.FAVOR_KEY, JSON.stringify(this.appState.favorites));
+        } else{this.appState.favorites.push(this.state);}
+        this.render()
+        // console.log(this.appState.favorites)
     };
 }
 /* <img src="https://covers.openlibrary.org/b/isbn/${this.state.isbn ? this.state.isbn[0] : '9780385533225'}-M.jpg" alt="Photo"></img> */

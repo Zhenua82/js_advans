@@ -37,17 +37,16 @@
         <img src="./static/logo.svg" alt="Лого">
         </div>
         <div class="menu">
-            <a class="menu__item" href="#" target="_blank">
+            <a class="menu__item" href="">
                 <img src="./static/search.svg" alt="Поиск">
                 <div class="menu__item__text">Поиск книг</div>
             </a>
-            <a class="menu__item" href="#">
+            <a class="menu__item" href="#1">
                 <img src="./static/favorites.svg" alt="Избранное">
                 <div class="menu__item__text">Избранное</div>
                 <div class="menu__caunter">${this.appState.favorites.length}</div>
             </a>
-        </div>`
-           ;
+        </div>`;
             return this.elem
         }
     }
@@ -1199,21 +1198,55 @@
         };
 
         render(){
-            let proverka = this.appState.favorites.find(el => el.title == this.state.title);
+            // let proverka = this.appState.favorites.find(el => el.title == this.state.title);
+            let proverka = this.appState.favorites.find(el => el.key == this.state.key);
             this.elem.classList.add('list-card');
             this.elem.innerHTML = `
         <div class="card">
         <div class="photo__card">
-            <img src="https://covers.openlibrary.org/b/isbn/${this.state.isbn ? this.state.isbn[0] : '9780385533225'}-M.jpg" alt="Photo">
+            <img src="https://covers.openlibrary.org/b/olid/${this.state.cover_edition_key}-M.jpg" alt="Photo">
         </div>
         <div class="footer__card">
             <div class="teg__footer__card">${this.state.subject ? this.state.subject[0] : 'Тег не определен'}</div>
             <div class="title__footer__card">${this.state.title}</div>
             <div class="auther__footer__card">${this.state.author_name ? this.state.author_name[0] : 'Автор не указан'}</div>
-            <button class="favor__footer__card"><img src="${proverka ? './static/add-white.png' : './static/add.png'}" alt="Favor"></button>
+            <button class="favor__footer__card ${proverka ? 'favor-active' : ''}"><img src="${proverka ? './static/add-white.png' : './static/add.png'}" alt="Favor"></button>
         </div>
     </div>`;
+            // Найти кнопку внутри this.elem и добавить обработчик события
+            let buttonClic = this.elem.querySelector('.favor__footer__card');
+            buttonClic.addEventListener('click', this.clic_btn.bind(this));
             return this.elem;
+        };
+        FAVOR_KEY = 'FAVOR_KEY';
+        clic_btn(){
+            let ind = this.appState.favorites.findIndex(el => el.key == this.state.key);
+            if(ind >= 0){
+                this.appState.favorites.splice(ind, 1);
+                localStorage.setItem(this.FAVOR_KEY, JSON.stringify(this.appState.favorites));
+            } else {this.appState.favorites.push(this.state);}
+            this.render();
+            // console.log(this.appState.favorites)
+        };
+    }
+    /* <img src="https://covers.openlibrary.org/b/isbn/${this.state.isbn ? this.state.isbn[0] : '9780385533225'}-M.jpg" alt="Photo"></img> */
+
+    class Paginator extends DivComponent{
+        constructor(state){
+            super();
+            this.state = state;
+        }
+        render(){
+            this.elem.classList.add('paginator');
+            this.elem.innerHTML =`<div class="paginator__left pag_comm">
+        <img src="./static/arrow_left.png" alt="Лево">
+        Предыдущая страница
+        </div>
+        <div class="paginator__right pag_comm">
+        Следующая страница
+        <img src="./static/arrow_right.png" alt="Right">
+        </div>`;
+            return this.elem
         };
     }
 
@@ -1225,25 +1258,38 @@
             this.appState = onChange(this.appState, this.appStateHook.bind(this));
             this.state = onChange(this.state, this.stateHook.bind(this));
         };
-
-        state = {
-            list: [],
-            loading: false,
-            searchQuery: undefined,
-            offset: 0,
-            numFound: 0
+        destroy(){
+            // console.log('destroy');
+            onChange.unsubscribe(this.appState);
+            onChange.unsubscribe(this.state);
         };
+        // state = DATABASE ? DATABASE : {
+        //         list: [],
+        //         loading: false,
+        //         searchQuery: undefined,
+        //         offset: 0,
+        //         numFound: 0
+        //     };
+        state = DATABASE;
+        HABBITS_KEY = 'HABBITS_KEY';
+        FAVOR_KEY = 'FAVOR_KEY';
+        saveData(){
+            localStorage.setItem(this.HABBITS_KEY, JSON.stringify(this.state));
+            localStorage.setItem(this.FAVOR_KEY, JSON.stringify(this.appState.favorites));
+          };
         appStateHook(path){
-            console.log(path);
             if (path === 'favorites'){
-                console.log(this.appState.favorites.at(-1));
+                // console.log(this.appState.favorites.at(-1))
+                this.render();
             }
         };
         async stateHook(path){
+            // if (path === 'searchQuery' || path === 'offset'){
             if (path === 'searchQuery'){
                 this.state.loading  = true;
                 const data = await this.loadlist(this.state.searchQuery);
-                console.log(data.docs);
+                // console.log(data.docs);
+                // this.state.list = data.docs.slice(this.state.offset, this.state.offset + 6);
                 this.state.list = data.docs;
                 this.state.numFound = data.numFound;
                 this.state.loading  = false;
@@ -1251,68 +1297,58 @@
             if (path === 'list' || path === 'loading'){
                 this.render();
             }
+            if (path === 'offset'){
+                this.render();
+            }
         };
         async loadlist(q){
-            // const resp = await fetch(`https://openlibrary.org/search.json?q=${q}&offset=${this.state.offset}`);
-            const resp = await fetch(`https://openlibrary.org/search.json?q=${q}&mode=everything`);
+            const resp = await fetch(`https://openlibrary.org/search.json?q=${q}&offset=${this.state.offset}`);
+            // const resp = await fetch(`https://openlibrary.org/search.json?q=${q}&mode=everything`);
             const prod = await resp.json();
             return prod
         }
         render(){
+            this.saveData();
             this.app.innerHTML ='';
             const main = document.createElement('div');
             main.append(new Search(this.state).render());
             main.append(new Cardlist(this.state).render());
-            // this.state.list.forEach(element => {
-            //     main.append(new Card(this.appState, element).render()) });
-            // main.innerHTML = `Число книг: ${this.appState.favorites.length}`;
             this.app.append(main);
-            // this.appState.favorites.push('Dfg Toxikologie');
             this.renderHeader();
-            // this.commun();
             this.app.append(this.commun());
+            this.paginator();
+            
         };
         renderHeader(){
             const header = new Header(this.appState).render();
             this.app.prepend(header);
         };
-        destroy(){
-            console.log('destroy');
-        };
-        // commun(){
-        //     // Получаем все элементы с классом "test"
-        //     let testElements = document.getElementsByClassName('list-card');
-        //     // Создаем новый элемент-контейнер
-        //     let container = document.createElement('div');
-        //     container.classList.add('commun');
-        //     // Обходим все элементы "test" и перемещаем их в контейнер
-        //     while (testElements.length) {
-        //         container.appendChild(testElements[0]);
-        //     }
-        //     // Вставляем контейнер в DOM
-        //     document.body.appendChild(container);
-        // }   
         commun(){
             const com = document.createElement('div');
             com.classList.add('commun');
-            this.state.list.forEach(element => {
+            this.state.list.slice(this.state.offset, this.state.offset + 6).forEach(element => {
                 com.append(new Card(this.appState, element).render()); });
             return com  
-        }   
-    }
-    class View1 extends AbstractView {
-        constructor(){
-            super();
-            this.setTitle('11111');
-        }
-        render(){
-            this.app.innerHTML ='';
-            const main = document.createElement('div');
-            main.innerHTML = 'Hello 111';
-            this.app.append(main);
-        }
-        destroy(){
-            console.log('destroy');
+        };
+        paginator(){
+            const pagin = new Paginator(this.state).render();
+            if (this.state.list.length > 0){
+                this.app.append(pagin);
+                const pagin_btn_left = document.querySelector('.paginator__left');
+                const pagin_btn_right = document.querySelector('.paginator__right');
+                pagin_btn_left.addEventListener('click', this.clic_btn_left.bind(this));
+                pagin_btn_right.addEventListener('click', this.clic_btn_right.bind(this));
+            }   
+        };
+        clic_btn_right(){
+            this.state.offset = this.state.offset + 6;
+            return this.state.offset    
+        };
+        clic_btn_left(){
+            if (this.state.offset > 0){
+                this.state.offset = this.state.offset - 6;
+            }
+            return this.state.offset    
         }
     }class Error404 extends AbstractView {
         constructor(){
@@ -1330,6 +1366,44 @@
         }
     }
 
+    class View1 extends AbstractView {
+        constructor(appState){
+            super();
+            this.appState = appState;
+            this.appState = onChange(this.appState, this.appStateHook.bind(this));
+            this.setTitle('Избранное');
+        }
+        destroy(){
+            // console.log('destroy')
+            onChange.unsubscribe(this.appState);
+        }
+        appStateHook(path){
+            if (path === 'favorites'){
+                this.render();
+            }
+        };
+        render(){
+            this.app.innerHTML ='';
+            const favor = document.createElement('h1');
+            favor.innerHTML = 'Избранные книги';
+            this.app.append(favor);
+            this.renderHeader();
+            this.app.append(this.commun());
+        };
+        renderHeader(){
+            const header = new Header(this.appState).render();
+            this.app.prepend(header);
+        };
+        commun(){
+            const com = document.createElement('div');
+            com.classList.add('commun');
+            this.appState.favorites.forEach(element => {
+                com.append(new Card(this.appState, element).render()); });
+            return com  
+        }   
+        
+    }
+
     class App{
         routes = [
             {path: "", view: MainView},
@@ -1338,7 +1412,7 @@
         ];
         appState = {
             favorites: []
-        }
+        };
 
         constructor(){
             window.addEventListener('hashchange', this.route.bind(this));
@@ -1352,10 +1426,34 @@
                 view = this.routes.find(el => el.path == location.hash).view;
             } else {view = Error404;}
             // const view = this.routes.find(el => el.path == location.hash).view;
+            const FAVOR_KEY = 'FAVOR_KEY';
+            const favorString = localStorage.getItem(FAVOR_KEY);
+            const favorArray = JSON.parse(favorString);
+            this.appState.favorites = favorArray;
+            
             this.currentView = new view(this.appState);
             this.currentView.render();
         }
     }
+
+    let database = {
+        list: [],
+        loading: false,
+        searchQuery: undefined,
+        offset: 0,
+        numFound: 0
+    };
+    window.DATABASE = database;//Делаем глобальной переменную 
+    const HABBITS_KEY = 'HABBITS_KEY';
+    function loadData(){
+        const habbitsString = localStorage.getItem(HABBITS_KEY);
+        const habbitsArray = JSON.parse(habbitsString);
+        DATABASE = habbitsArray;}
+
+    //init:
+    (function() {
+        loadData();
+    })();
     new App();
 
     // try{} catch(e){console.error(e)}

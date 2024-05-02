@@ -1,12 +1,11 @@
 .card{
-    width: 380px;
+    width: 480px;
     height: 288px;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    border-radius: 30x;
-    /* overflow: hidden; */
-    background-color: red;
+    /* border-radius: 20x; */
+    overflow: hidden;
 }
 .photo__card{
     background-color: rgba(184, 184, 184, 1);
@@ -14,7 +13,7 @@
     justify-content: center;
     align-items: flex-start;
     height: 49.999999%;
-    /* border-radius: 8px 8px 0px 0px; */
+    border-radius: 8px 8px 0px 0px;
 }
 .photo__card img{
     width: 90px; 
@@ -24,7 +23,7 @@
     background-color: var(--black);
     color: var(--white);
     height: 50%;
-    /* border-radius: 0px 0px 8px 8px; */
+    border-radius: 0px 0px 8px 8px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -66,6 +65,7 @@
 }
 .favor__footer__card img{
     width: 36px;
+    cursor: pointer;
 }
 .list-card {
     width: 180px;
@@ -73,8 +73,10 @@
     justify-content: space-between;
 }
 .commun{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    /* display: flex;
+    justify-content: space-between; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* flex-wrap: wrap; */
     width: 600px;
 }

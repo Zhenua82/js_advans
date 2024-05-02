@@ -13,17 +13,16 @@ export class Header extends DivComponent{
         <img src="./static/logo.svg" alt="Лого">
         </div>
         <div class="menu">
-            <a class="menu__item" href="#" target="_blank">
+            <a class="menu__item" href="">
                 <img src="./static/search.svg" alt="Поиск">
                 <div class="menu__item__text">Поиск книг</div>
             </a>
-            <a class="menu__item" href="#">
+            <a class="menu__item" href="#1">
                 <img src="./static/favorites.svg" alt="Избранное">
                 <div class="menu__item__text">Избранное</div>
                 <div class="menu__caunter">${this.appState.favorites.length}</div>
             </a>
-        </div>`
-       ;
+        </div>`;
         return this.elem
     }
 }

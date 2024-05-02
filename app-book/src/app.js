@@ -1,6 +1,7 @@
 'use strict'
-import './components/card.css';
-import { MainView,  View1, Error404 } from './views/main/main';
+// import { MainView,  View1, Error404 } from './views/main/main';
+import { MainView, Error404 } from './views/main/main';
+import {View1} from './views/faivorits/faivorits';
 
 class App{
     routes = [
@@ -10,7 +11,7 @@ class App{
     ];
     appState = {
         favorites: []
-    }
+    };
 
     constructor(){
         window.addEventListener('hashchange', this.route.bind(this));
@@ -25,10 +26,35 @@ class App{
             view = this.routes.find(el => el.path == location.hash).view;
         } else {view = Error404}
         // const view = this.routes.find(el => el.path == location.hash).view;
+        const FAVOR_KEY = 'FAVOR_KEY'
+        const favorString = localStorage.getItem(FAVOR_KEY);
+        const favorArray = JSON.parse(favorString);
+        this.appState.favorites = favorArray;
+        
         this.currentView = new view(this.appState);
         this.currentView.render()
     }
 }
+
+let database = {
+    list: [],
+    loading: false,
+    searchQuery: undefined,
+    offset: 0,
+    numFound: 0
+};
+window.DATABASE = database;//Делаем глобальной переменную 
+const HABBITS_KEY = 'HABBITS_KEY';
+const FAVOR_KEY = 'FAVOR_KEY'
+function loadData(){
+    const habbitsString = localStorage.getItem(HABBITS_KEY);
+    const habbitsArray = JSON.parse(habbitsString);
+    DATABASE = habbitsArray;}
+
+//init:
+(function() {
+    loadData();
+})();
 new App();
 
 // try{} catch(e){console.error(e)}
