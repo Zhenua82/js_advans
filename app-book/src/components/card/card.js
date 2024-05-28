@@ -15,7 +15,9 @@ export class Card extends DivComponent{
         this.elem.innerHTML = `
         <div class="card">
         <div class="photo__card">
+            <a href="https://openlibrary.org/${this.state.key}" target="_blank">
             <img src="https://covers.openlibrary.org/b/olid/${this.state.cover_edition_key}-M.jpg" alt="Photo">
+            </a>
         </div>
         <div class="footer__card">
             <div class="teg__footer__card">${this.state.subject ? this.state.subject[0] : 'Тег не определен'}</div>
@@ -27,8 +29,15 @@ export class Card extends DivComponent{
         // Найти кнопку внутри this.elem и добавить обработчик события
         let buttonClic = this.elem.querySelector('.favor__footer__card');
         buttonClic.addEventListener('click', this.clic_btn.bind(this));
+
+        // let photoCard = this.elem.querySelector('.photo__card');
+        // photoCard.addEventListener('click', this.bookdescript.bind(this));
+
         return this.elem;
     };
+    // bookdescript(){
+    //     console.log('Hello', this.state.key)
+    // };
     FAVOR_KEY = 'FAVOR_KEY';
     clic_btn(){
         let ind = this.appState.favorites.findIndex(el => el.key == this.state.key)

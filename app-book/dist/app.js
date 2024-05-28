@@ -1204,7 +1204,9 @@
             this.elem.innerHTML = `
         <div class="card">
         <div class="photo__card">
+            <a href="https://openlibrary.org/${this.state.key}" target="_blank">
             <img src="https://covers.openlibrary.org/b/olid/${this.state.cover_edition_key}-M.jpg" alt="Photo">
+            </a>
         </div>
         <div class="footer__card">
             <div class="teg__footer__card">${this.state.subject ? this.state.subject[0] : 'Тег не определен'}</div>
@@ -1216,8 +1218,15 @@
             // Найти кнопку внутри this.elem и добавить обработчик события
             let buttonClic = this.elem.querySelector('.favor__footer__card');
             buttonClic.addEventListener('click', this.clic_btn.bind(this));
+
+            // let photoCard = this.elem.querySelector('.photo__card');
+            // photoCard.addEventListener('click', this.bookdescript.bind(this));
+
             return this.elem;
         };
+        // bookdescript(){
+        //     console.log('Hello', this.state.key)
+        // };
         FAVOR_KEY = 'FAVOR_KEY';
         clic_btn(){
             let ind = this.appState.favorites.findIndex(el => el.key == this.state.key);
@@ -1274,7 +1283,12 @@
         HABBITS_KEY = 'HABBITS_KEY';
         FAVOR_KEY = 'FAVOR_KEY';
         saveData(){
-            localStorage.setItem(this.HABBITS_KEY, JSON.stringify(this.state));
+            // localStorage.setItem(this.HABBITS_KEY, JSON.stringify(this.state));
+            // localStorage.setItem(this.FAVOR_KEY, JSON.stringify(this.appState.favorites));
+            const { list, ...rest } = this.state; // Извлекаем list и все остальные свойства state
+            const trimmedList = list.slice(0, 72); // Получаем первые 72 элементов из list
+            const trimmedState = { ...rest, list: trimmedList }; // Создаем новый объект состояния
+            localStorage.setItem(this.HABBITS_KEY, JSON.stringify(trimmedState)); // Сохраняем в localStorage
             localStorage.setItem(this.FAVOR_KEY, JSON.stringify(this.appState.favorites));
           };
         appStateHook(path){
@@ -1326,6 +1340,7 @@
         commun(){
             const com = document.createElement('div');
             com.classList.add('commun');
+            console.log(this.state.offset);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             this.state.list.slice(this.state.offset, this.state.offset + 6).forEach(element => {
                 com.append(new Card(this.appState, element).render()); });
             return com  
@@ -1429,8 +1444,9 @@
             const FAVOR_KEY = 'FAVOR_KEY';
             const favorString = localStorage.getItem(FAVOR_KEY);
             const favorArray = JSON.parse(favorString);
-            this.appState.favorites = favorArray;
-            
+            // this.appState.favorites = favorArray; !!!!!!!!!!!!!!!!!!!!!!!
+            this.appState.favorites = favorArray ? favorArray : [];
+
             this.currentView = new view(this.appState);
             this.currentView.render();
         }
@@ -1447,7 +1463,21 @@
     const HABBITS_KEY = 'HABBITS_KEY';
     function loadData(){
         const habbitsString = localStorage.getItem(HABBITS_KEY);
-        const habbitsArray = JSON.parse(habbitsString);
+        // const habbitsArray = JSON.parse(habbitsString); !!!!!!!!!!!!!!!!!!!!!!!!!
+        const habbitsArray = JSON.parse(habbitsString) ? JSON.parse(habbitsString): {
+            list: [],//При неправильных манипуляциях с localstorage - восстанавливаем его до правильных кондиций
+            loading: false,
+            searchQuery: undefined,
+            offset: 0,
+            numFound: 0
+        };
+        // const habbitsArray = {
+        //     list: [],//При неправильных манипуляциях с localstorage - восстанавливаем его до правильных кондиций
+        //     loading: false,
+        //     searchQuery: undefined,
+        //     offset: 0,
+        //     numFound: 0
+        // };
         DATABASE = habbitsArray;}
 
     //init:

@@ -30,7 +30,12 @@ export class MainView extends AbstractView {
     HABBITS_KEY = 'HABBITS_KEY';
     FAVOR_KEY = 'FAVOR_KEY';
     saveData(){
-        localStorage.setItem(this.HABBITS_KEY, JSON.stringify(this.state));
+        // localStorage.setItem(this.HABBITS_KEY, JSON.stringify(this.state));
+        // localStorage.setItem(this.FAVOR_KEY, JSON.stringify(this.appState.favorites));
+        const { list, ...rest } = this.state; // Извлекаем list и все остальные свойства state
+        const trimmedList = list.slice(0, 72); // Получаем первые 72 элементов из list
+        const trimmedState = { ...rest, list: trimmedList }; // Создаем новый объект состояния
+        localStorage.setItem(this.HABBITS_KEY, JSON.stringify(trimmedState)); // Сохраняем в localStorage
         localStorage.setItem(this.FAVOR_KEY, JSON.stringify(this.appState.favorites));
       };
     appStateHook(path){
@@ -82,6 +87,7 @@ export class MainView extends AbstractView {
     commun(){
         const com = document.createElement('div');
         com.classList.add('commun');
+        console.log(this.state.offset)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         this.state.list.slice(this.state.offset, this.state.offset + 6).forEach(element => {
             com.append(new Card(this.appState, element).render()) });
         return com  

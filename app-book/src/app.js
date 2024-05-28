@@ -29,8 +29,9 @@ class App{
         const FAVOR_KEY = 'FAVOR_KEY'
         const favorString = localStorage.getItem(FAVOR_KEY);
         const favorArray = JSON.parse(favorString);
-        this.appState.favorites = favorArray;
-        
+        // this.appState.favorites = favorArray; !!!!!!!!!!!!!!!!!!!!!!!
+        this.appState.favorites = favorArray ? favorArray : [];
+
         this.currentView = new view(this.appState);
         this.currentView.render()
     }
@@ -48,7 +49,21 @@ const HABBITS_KEY = 'HABBITS_KEY';
 const FAVOR_KEY = 'FAVOR_KEY'
 function loadData(){
     const habbitsString = localStorage.getItem(HABBITS_KEY);
-    const habbitsArray = JSON.parse(habbitsString);
+    // const habbitsArray = JSON.parse(habbitsString); !!!!!!!!!!!!!!!!!!!!!!!!!
+    const habbitsArray = JSON.parse(habbitsString) ? JSON.parse(habbitsString): {
+        list: [],//При неправильных манипуляциях с localstorage - восстанавливаем его до правильных кондиций
+        loading: false,
+        searchQuery: undefined,
+        offset: 0,
+        numFound: 0
+    };
+    // const habbitsArray = {
+    //     list: [],//При неправильных манипуляциях с localstorage - восстанавливаем его до правильных кондиций
+    //     loading: false,
+    //     searchQuery: undefined,
+    //     offset: 0,
+    //     numFound: 0
+    // };
     DATABASE = habbitsArray;}
 
 //init:
