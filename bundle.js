@@ -29,7 +29,7 @@ console.log(document);//Корневой документ (корневая но
 console.log(document.head);
 console.log(document.head.textContent);
 console.log(document.body);
-console.log(document.documentElement);//Эдемент документа - html
+console.log(document.documentElement);//Элемент документа - html
 console.log(document.documentElement.lang);
 const body = document.querySelector('body');
 const elem = document.querySelector('.err');
